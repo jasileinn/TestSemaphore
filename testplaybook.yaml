@@ -26,8 +26,6 @@
         apt-get purge -y cloud-init
         rm -rf /etc/cloud/
         rm -rf /var/lib/cloud/
-      args:
-        warn: false
 
   handlers:
     - name: Enable and Start QEMU Guest Agent
