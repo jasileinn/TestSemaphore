@@ -1,7 +1,5 @@
-host: TestClient
-version: v1.0
-name: TestPlaybook
-tasks:
+  host: TestClient
+  tasks:
   - name: Set Timezone
     run:
       command: |
