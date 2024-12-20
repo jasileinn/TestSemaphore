@@ -1,0 +1,29 @@
+version: v1.0
+name: TestPlaybook
+tasks:
+  - name: Set Timezone
+    run:
+      command: |
+        sudo timedatectl set-timezone Europe/Berlin
+
+  - name: Update and Upgrade Packages
+    run:
+      command: |
+        sudo apt update -y
+        sudo apt upgrade -y
+
+  - name: Install QEMU Guest Agent
+    run:
+      command: |
+        sudo apt install -y qemu-guest-agent
+        sudo systemctl enable qemu-guest-agent
+        sudo systemctl start qemu-guest-agent
+
+  - name: Disable Cloud-Init
+    run:
+      command: |
+        sudo touch /etc/cloud/cloud-init.disabled
+        sudo dpkg-reconfigure cloud-init -y
+        sudo apt-get purge -y cloud-init
+        sudo rm -rf /etc/cloud/
+        sudo rm -rf /var/lib/cloud/
