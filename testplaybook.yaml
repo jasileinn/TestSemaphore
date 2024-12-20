@@ -1,4 +1,6 @@
+- name: testplaybook
   host: TestClient
+  
   tasks:
   - name: Set Timezone
     run:
