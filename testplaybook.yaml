@@ -1,29 +1,35 @@
-- name: testplaybook
-  
+- name: Test Playbook
+
   tasks:
-  - name: Set Timezone
-    run:
-      command: |
-        sudo timedatectl set-timezone Europe/Berlin
+    - name: Set Timezone
+      command: timedatectl set-timezone Europe/Berlin
 
-  - name: Update and Upgrade Packages
-    run:
-      command: |
-        sudo apt update -y
-        sudo apt upgrade -y
+    - name: Update and Upgrade Packages
+      apt:
+        update_cache: yes
+        upgrade: dist
+        force_apt_get: yes
 
-  - name: Install QEMU Guest Agent
-    run:
-      command: |
-        sudo apt install -y qemu-guest-agent
-        sudo systemctl enable qemu-guest-agent
-        sudo systemctl start qemu-guest-agent
+    - name: Install QEMU Guest Agent
+      apt:
+        name: qemu-guest-agent
+        state: present
+      notify:
+        - Enable and Start QEMU Guest Agent
 
-  - name: Disable Cloud-Init
-    run:
-      command: |
-        sudo touch /etc/cloud/cloud-init.disabled
-        sudo dpkg-reconfigure cloud-init -y
-        sudo apt-get purge -y cloud-init
-        sudo rm -rf /etc/cloud/
-        sudo rm -rf /var/lib/cloud/
+    - name: Disable Cloud-Init
+      shell: |
+        touch /etc/cloud/cloud-init.disabled
+        dpkg-reconfigure cloud-init
+        apt-get purge -y cloud-init
+        rm -rf /etc/cloud/
+        rm -rf /var/lib/cloud/
+      args:
+        warn: false
+
+  handlers:
+    - name: Enable and Start QEMU Guest Agent
+      service:
+        name: qemu-guest-agent
+        state: started
+        enabled: true
