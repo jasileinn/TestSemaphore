@@ -1,3 +1,4 @@
+host: TestClient
 version: v1.0
 name: TestPlaybook
 tasks:
