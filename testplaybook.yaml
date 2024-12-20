@@ -1,5 +1,6 @@
-- name: Ttestplaybook
+- name: testplaybook
   hosts: testclients
+  become: true
 
   tasks:
     - name: Set Timezone
